@@ -47,7 +47,7 @@ public class CollegeAdapter extends RecyclerView.Adapter<CollegeAdapter.CollegeV
             public void onClick(View v) {
                 Intent college_detail_intent = new Intent(c, CollegeDetails.class);
                 //taking data from this intent to next using putExtra. this will send details based on childs position
-                college_detail_intent.putExtra("name",position);
+                college_detail_intent.putExtra("name",collegelist.get(position).getId());
                 c.startActivity(college_detail_intent);
             }
         });

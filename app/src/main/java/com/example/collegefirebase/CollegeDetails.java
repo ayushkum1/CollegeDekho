@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,21 +35,21 @@ public class CollegeDetails extends AppCompatActivity {
         collegeplacements = findViewById(R.id.college_placements);
 
         //initializing this app to the firebase
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setApplicationId("1:214131280810:android:16b09942d8b19eca4079d3")
-                .setApiKey("AIzaSyDwulvsRr_6ny_gDmVnfFa0D9NAZRKiivE")
-                .setDatabaseUrl("https://collegedata-bc8d9.firebaseio.com/")
-                .setProjectId("collegedata-bc8d9").build();
-        FirebaseApp.initializeApp(getApplicationContext(),options,"UserApp");
-        FirebaseApp app = FirebaseApp.getInstance("UserApp");
-        FirebaseDatabase userdatabase = FirebaseDatabase.getInstance(app);
+//        FirebaseOptions options = new FirebaseOptions.Builder()
+//                .setApplicationId("1:214131280810:android:16b09942d8b19eca4079d3")
+//                .setApiKey("AIzaSyDwulvsRr_6ny_gDmVnfFa0D9NAZRKiivE")
+//                .setDatabaseUrl("https://collegedata-bc8d9.firebaseio.com/")
+//                .setProjectId("collegedata-bc8d9").build();
+//        FirebaseApp.initializeApp(getApplicationContext(),options,"UserApp");
+//        FirebaseApp app = FirebaseApp.getInstance("UserApp");
+       FirebaseDatabase userdatabase = FirebaseDatabase.getInstance();
 
         collegeinforef = userdatabase.getReference("collegedata");
         //getIntent to get the data from the previous(CollegeAdapter) intent.
         //this will help us to set the data from the database
-        int collegename = getIntent().getIntExtra("name", 0);
+        String collegename = getIntent().getStringExtra("name");
 
-        collegeinforef.child(String.valueOf(collegename)).addValueEventListener(new ValueEventListener() {
+        collegeinforef.child(collegename).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //creating a college(model class) object to fetch details by calling respective constructors
@@ -63,6 +64,7 @@ public class CollegeDetails extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("OnDatabase Error", databaseError.getMessage().toString());
                 Toast.makeText(CollegeDetails.this, "Sorry", Toast.LENGTH_SHORT).show();
             }
         });
