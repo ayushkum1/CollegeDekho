@@ -26,7 +26,7 @@ import java.util.UUID;
 public class SignUpDetails extends AppCompatActivity {
 
     DatabaseReference ref;
-    FirebaseAuth auth;
+    private FirebaseAuth auth;
     EditText userfirstname, userlastname, useremail, userpwd, usercnfmpwd, userphoneno;
     Button signup;
 
@@ -34,6 +34,7 @@ public class SignUpDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         ref = FirebaseDatabase.getInstance().getReference("UserData");
+        auth = FirebaseAuth.getInstance();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_details);
@@ -67,36 +68,36 @@ public class SignUpDetails extends AppCompatActivity {
         phone = userphoneno.getText().toString().trim();
 
         if(TextUtils.isEmpty(fname)){
-            Toast.makeText(this, "Pls Enter First Name", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Pls Enter First Name", Toast.LENGTH_LONG).show();
             return;
         }
 
         if(TextUtils.isEmpty(lname)){
-            Toast.makeText(this, "Pls Enter last Name", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Pls Enter last Name", Toast.LENGTH_LONG).show();
             return;
         }
 
         if(TextUtils.isEmpty(email)){
-            Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Enter email", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if(TextUtils.isEmpty(password)){
-            Toast.makeText(this, "Pls enter the password", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Pls enter the password", Toast.LENGTH_LONG).show();
             return;
         }
 
         if(TextUtils.isEmpty(cpwd)){
-            Toast.makeText(this, "Pls confirm the password", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Pls confirm the password", Toast.LENGTH_LONG).show();
             return;
         }
 
         if(!password.equals(cpwd)){
-            Toast.makeText(this, "password do not match", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "password do not match", Toast.LENGTH_SHORT).show();
         }
 
         if(TextUtils.isEmpty(phone)){
-            Toast.makeText(this, "Phone number is empty", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Phone number is empty", Toast.LENGTH_LONG).show();
             return;
         }
 
