@@ -23,7 +23,7 @@ public class CollegeMapLocation extends FragmentActivity implements OnMapReadyCa
     private GoogleMap mMap;
     private DatabaseReference c_ref;
     String collegename;
-    int collegelocation;
+    String collegelocation;
     String latitude,longitude;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class CollegeMapLocation extends FragmentActivity implements OnMapReadyCa
 
         //database reference to retrieve latitude and longitude values
         c_ref = FirebaseDatabase.getInstance().getReference("collegedata");
-        collegelocation = getIntent().getIntExtra("location",0);
+        collegelocation = getIntent().getStringExtra("location");
 
     }
 

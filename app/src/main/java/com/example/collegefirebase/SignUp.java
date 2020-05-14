@@ -107,43 +107,45 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String email = signupmail.getText().toString();
-                String password = signuppwd.getText().toString();
-
-                if(TextUtils.isEmpty(email)){
-                    Toast.makeText(getApplicationContext(),"Please enter your E-mail address",Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if(TextUtils.isEmpty(password)){
-                    Toast.makeText(getApplicationContext(),"Please enter your password",Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if(password.length() == 0){
-                    Toast.makeText(getApplicationContext(),"Please enter your password",Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if(password.length()<8){
-                    Toast.makeText(getApplicationContext(),"Please enter passwords having more than 8 characters",Toast.LENGTH_LONG).show();
-                    return;
-                }
-                else{
-                    auth.createUserWithEmailAndPassword(email,password)
-                            .addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if(task.isSuccessful()){
-                                        startActivity(new Intent(SignUp.this, MainActivity.class));
-                                        finish();
-                                    }
-                                    else{
-                                        //to catch error
-                                        Log.e("signup", "onComplete: " +task.getException().getMessage().toString() );
-                                        Toast.makeText(SignUp.this, "ERROR",Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            });
-
-                }
+                Intent signupintent = new Intent(SignUp.this,SignUpDetails.class);
+                startActivity(signupintent);
+//                String email = signupmail.getText().toString();
+//                String password = signuppwd.getText().toString();
+//
+//                if(TextUtils.isEmpty(email)){
+//                    Toast.makeText(getApplicationContext(),"Please enter your E-mail address",Toast.LENGTH_LONG).show();
+//                    return;
+//                }
+//                if(TextUtils.isEmpty(password)){
+//                    Toast.makeText(getApplicationContext(),"Please enter your password",Toast.LENGTH_LONG).show();
+//                    return;
+//                }
+//                if(password.length() == 0){
+//                    Toast.makeText(getApplicationContext(),"Please enter your password",Toast.LENGTH_LONG).show();
+//                    return;
+//                }
+//                if(password.length()<8){
+//                    Toast.makeText(getApplicationContext(),"Please enter passwords having more than 8 characters",Toast.LENGTH_LONG).show();
+//                    return;
+//                }
+//                else{
+//                    auth.createUserWithEmailAndPassword(email,password)
+//                            .addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<AuthResult> task) {
+//                                    if(task.isSuccessful()){
+//                                        startActivity(new Intent(SignUp.this, MainActivity.class));
+//                                        finish();
+//                                    }
+//                                    else{
+//                                        //to catch error
+//                                        Log.e("signup", "onComplete: " +task.getException().getMessage().toString() );
+//                                        Toast.makeText(SignUp.this, "ERROR",Toast.LENGTH_LONG).show();
+//                                    }
+//                                }
+//                            });
+//
+//                }
             }
         });
 

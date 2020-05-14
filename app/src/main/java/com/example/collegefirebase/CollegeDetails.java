@@ -20,7 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 public class CollegeDetails extends AppCompatActivity {
 
     private DatabaseReference collegeinforef;
-    private TextView collegeabout, collegenamedetail, collegeaddress, collegedepartment, collegeplacements;
+    private TextView collegeabout, collegenamedetail, collegeaddress, collegedepartment, collegeplacements, collegerating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,16 +33,9 @@ public class CollegeDetails extends AppCompatActivity {
         collegeaddress  = findViewById(R.id.college_address);
         collegedepartment = findViewById(R.id.college_department);
         collegeplacements = findViewById(R.id.college_placements);
+        collegerating = findViewById(R.id.college_rating);
 
-        //initializing this app to the firebase
-//        FirebaseOptions options = new FirebaseOptions.Builder()
-//                .setApplicationId("1:214131280810:android:16b09942d8b19eca4079d3")
-//                .setApiKey("AIzaSyDwulvsRr_6ny_gDmVnfFa0D9NAZRKiivE")
-//                .setDatabaseUrl("https://collegedata-bc8d9.firebaseio.com/")
-//                .setProjectId("collegedata-bc8d9").build();
-//        FirebaseApp.initializeApp(getApplicationContext(),options,"UserApp");
-//        FirebaseApp app = FirebaseApp.getInstance("UserApp");
-       FirebaseDatabase userdatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase userdatabase = FirebaseDatabase.getInstance();
 
         collegeinforef = userdatabase.getReference("collegedata");
         //getIntent to get the data from the previous(CollegeAdapter) intent.
@@ -60,6 +53,7 @@ public class CollegeDetails extends AppCompatActivity {
                 collegedepartment.setText(c.getDepartments());
                 collegeplacements.setText(c.getPlacements());
                 collegeaddress.setText(c.getAddress());
+                collegerating.setText(c.getRating());
             }
 
             @Override

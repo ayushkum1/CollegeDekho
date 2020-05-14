@@ -55,7 +55,7 @@ public class CollegeAdapter extends RecyclerView.Adapter<CollegeAdapter.CollegeV
             @Override
             public void onClick(View v) {
                 Intent college_gallery_intent = new Intent(c, CollegeGallery.class);
-                college_gallery_intent.putExtra("gallery",position);
+                college_gallery_intent.putExtra("gallery",collegelist.get(position).getId());
                 c.startActivity(college_gallery_intent);
             }
         });
@@ -63,7 +63,7 @@ public class CollegeAdapter extends RecyclerView.Adapter<CollegeAdapter.CollegeV
             @Override
             public void onClick(View v) {
                 Intent college_location_intent = new Intent(c, CollegeMapLocation.class);
-                college_location_intent.putExtra("location",position);
+                college_location_intent.putExtra("location",collegelist.get(position).getId());
                 c.startActivity(college_location_intent);
 
             }

@@ -22,7 +22,7 @@ public class CollegeGallery extends AppCompatActivity {
     private static final String TAG = "CollegeGallery";
     public GridView grid;
     public DatabaseReference ref;
-    private int collegeimage;
+    private String collegeimage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,7 @@ public class CollegeGallery extends AppCompatActivity {
         setContentView(R.layout.activity_college_gallery);
         ref = FirebaseDatabase.getInstance().getReference("collegedata");
         //this will get the data from previous intent
-        collegeimage = getIntent().getIntExtra("gallery",0);
+        collegeimage = getIntent().getStringExtra("gallery");
         grid = findViewById(R.id.grid);
         //a list of string will  be passed to  imagegrid object
         ref.child(String.valueOf(collegeimage)).addValueEventListener(new ValueEventListener() {
