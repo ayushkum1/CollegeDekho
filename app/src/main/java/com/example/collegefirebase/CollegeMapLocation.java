@@ -4,12 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +28,10 @@ public class CollegeMapLocation extends FragmentActivity implements OnMapReadyCa
     String collegename;
     String collegelocation;
     String latitude,longitude;
+    float default_zoom;
+    private UiSettings uisetting;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +39,7 @@ public class CollegeMapLocation extends FragmentActivity implements OnMapReadyCa
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.college_location);
+                .findFragmentById(R.id.college_location_map);
         mapFragment.getMapAsync(this);
 
         //database reference to retrieve latitude and longitude values
@@ -44,8 +51,15 @@ public class CollegeMapLocation extends FragmentActivity implements OnMapReadyCa
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        uisetting = mMap.getUiSettings(); //need this to enable zoom controls and other features
+
+        uisetting.setAllGesturesEnabled(true); //double tap etc
+        uisetting.setZoomControlsEnabled(true); //zoom in and out
+        uisetting.setCompassEnabled(true);
+
         //call this function to set the location
         locationEventListener();
+
     }
 
     private void locationEventListener(){
@@ -62,11 +76,13 @@ public class CollegeMapLocation extends FragmentActivity implements OnMapReadyCa
                 //convert the values to double as LatLng takes (double,double)
                 double lat = Double.parseDouble(latitude);
                 double lng = Double.parseDouble(longitude);
+                default_zoom = 16.0f; //this will zoom to the location set
                 //set LatLng with converted values
                 LatLng college = new LatLng(lat,lng);
                 //name of markeras college name
                 mMap.addMarker(new MarkerOptions().position(college).title("Marker in " + collegename ));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(college));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(college,default_zoom));
+
             }
 
             @Override

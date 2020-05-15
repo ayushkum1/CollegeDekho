@@ -114,7 +114,7 @@ public class SignUpDetails extends AppCompatActivity {
         else{
             Users user = new Users(userid, fname, lname, email, password, phone);
 
-            ref.child(userid).setValue(user);
+            ref.child(email.replace(".","_")).setValue(user);
             Toast.makeText(this, "Details added", Toast.LENGTH_SHORT).show();
 
             auth.createUserWithEmailAndPassword(email,password)
@@ -133,60 +133,5 @@ public class SignUpDetails extends AppCompatActivity {
                         }
                     });
         }
-
-
-
-//        if(TextUtils.isEmpty(fname)){
-//            if(TextUtils.isEmpty(lname)){
-//                if(TextUtils.isEmpty(email)){
-//                    if(TextUtils.isEmpty(password)){
-//                            if(TextUtils.isEmpty(cpwd)){
-//                                if(password == cpwd){
-//                                    Users user = new Users(userid, fname, lname, email, password, phone);
-//
-//                                    ref.child(userid).setValue(user);
-//                                    Toast.makeText(this, "Details added", Toast.LENGTH_SHORT).show();
-//
-//                                    auth.createUserWithEmailAndPassword(email,password)
-//                                        .addOnCompleteListener(SignUpDetails.this, new OnCompleteListener<AuthResult>() {
-//                                        @Override
-//                                        public void onComplete(@NonNull Task<AuthResult> task) {
-//                                            if(task.isSuccessful()){
-//                                                startActivity(new Intent(SignUpDetails.this, MainActivity.class));
-//                                                finish();
-//                                            }
-//                                            else{
-//                                                //to catch error
-//                                                Log.e("signup", "onComplete: " +task.getException().getMessage().toString() );
-//                                                Toast.makeText(SignUpDetails.this, "ERROR",Toast.LENGTH_LONG).show();
-//                                            }
-//                                        }
-//                                    });
-//                                }
-//                                else{
-//                                    Toast.makeText(this, "password do not match", Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//                            else{
-//                                Toast.makeText(this, "enter password", Toast.LENGTH_SHORT).show();
-//                            }
-//                    }
-//                    else{
-//                        Toast.makeText(this, "enter password", Toast.LENGTH_SHORT).show();
-//
-//                    }
-//                }
-//                else{
-//                    Toast.makeText(this, "email is empty", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//            else{
-//                Toast.makeText(this, "name is empty", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//        else {
-//            Toast.makeText(this, "name is empty", Toast.LENGTH_SHORT).show();
-//        }
-
     }
 }
