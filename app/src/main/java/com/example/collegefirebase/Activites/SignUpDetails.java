@@ -1,4 +1,4 @@
-package com.example.collegefirebase;
+package com.example.collegefirebase.Activites;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,14 +12,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.collegefirebase.Common.CurrentUser;
+import com.example.collegefirebase.R;
+import com.example.collegefirebase.Model.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.w3c.dom.Text;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.UUID;
 
@@ -29,6 +34,7 @@ public class SignUpDetails extends AppCompatActivity {
     private FirebaseAuth auth;
     EditText userfirstname, userlastname, useremail, userpwd, usercnfmpwd, userphoneno;
     Button signup;
+    private static final String TAG = "SignUpDetails";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,7 @@ public class SignUpDetails extends AppCompatActivity {
         signup = findViewById(R.id.user_signup);
 
 
+
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +64,7 @@ public class SignUpDetails extends AppCompatActivity {
     }
 
     private void addUserInformation(){
-        String userid, fname, lname, email, password, cpwd, phone;
+        final String userid, fname, lname, email, password, cpwd, phone;
 
         userid = UUID.randomUUID().toString();
         fname = userfirstname.getText().toString().trim();
@@ -112,26 +119,64 @@ public class SignUpDetails extends AppCompatActivity {
         }
 
         else{
-            Users user = new Users(userid, fname, lname, email, password, phone);
+            ref.child(email.replace(".","_")).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()){
+                        Toast.makeText(SignUpDetails.this, "That email already exists. Sign in instead", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        if (password.equals(cpwd)){
+                            final Users user = new Users(userid, fname, lname, email, password, phone);
 
-            ref.child(email.replace(".","_")).setValue(user);
-            Toast.makeText(this, "Details added", Toast.LENGTH_SHORT).show();
+                            ref.child(email.replace(".","_")).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()){
+                                        Toast.makeText(SignUpDetails.this, "Details added", Toast.LENGTH_SHORT).show();
+                                        CurrentUser.currentUser = user;
+                                        startActivity(new Intent(SignUpDetails.this, MainActivity.class));
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(SignUpDetails.this, "We're having trouble signing you up", Toast.LENGTH_SHORT).show();
+                                    Log.e(TAG, "onFailure: "+ e.getMessage() );
 
-            auth.createUserWithEmailAndPassword(email,password)
-                    .addOnCompleteListener(SignUpDetails.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()){
-                                startActivity(new Intent(SignUpDetails.this, MainActivity.class));
-                                finish();
-                            }
-                            else{
-                                //to catch error
-                                Log.e("signup", "onComplete: " +task.getException().getMessage().toString() );
-                                Toast.makeText(SignUpDetails.this, "ERROR",Toast.LENGTH_LONG).show();
-                            }
+                                }
+                            });
+
+
+//            auth.createUserWithEmailAndPassword(email,password)
+//                    .addOnCompleteListener(SignUpDetails.this, new OnCompleteListener<AuthResult>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<AuthResult> task) {
+//                            if(task.isSuccessful()){
+//                                startActivity(new Intent(SignUpDetails.this, MainActivity.class));
+//                                finish();
+//                            }
+//                            else{
+//                                //to catch error
+//                                Log.e("signup", "onComplete: " +task.getException().getMessage().toString() );
+//                                Toast.makeText(SignUpDetails.this, "ERROR",Toast.LENGTH_LONG).show();
+//                            }
+//                        }
+//                    });
                         }
-                    });
+                        else {
+                            Toast.makeText(SignUpDetails.this, "Passwords don't match", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+
+                }
+            });
         }
     }
 }

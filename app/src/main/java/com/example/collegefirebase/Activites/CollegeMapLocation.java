@@ -1,15 +1,15 @@
-package com.example.collegefirebase;
+package com.example.collegefirebase.Activites;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.collegefirebase.Model.College;
+import com.example.collegefirebase.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;

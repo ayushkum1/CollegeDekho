@@ -1,4 +1,4 @@
-package com.example.collegefirebase;
+package com.example.collegefirebase.Utils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.collegefirebase.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 

@@ -1,4 +1,4 @@
-package com.example.collegefirebase;
+package com.example.collegefirebase.Model;
 
 public class Users {
     String userid, fname, lname, email, password, phoneno;

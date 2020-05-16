@@ -1,4 +1,4 @@
-package com.example.collegefirebase;
+package com.example.collegefirebase.Utils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.collegefirebase.Activites.CollegeDetails;
+import com.example.collegefirebase.Activites.CollegeGallery;
+import com.example.collegefirebase.Activites.CollegeMapLocation;
+import com.example.collegefirebase.Model.College;
+import com.example.collegefirebase.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -22,7 +27,7 @@ public class CollegeAdapter extends RecyclerView.Adapter<CollegeAdapter.CollegeV
     private List<College> collegelist;
 
     //default constructor
-    CollegeAdapter(Context c, List<College> collegelist) {
+  public CollegeAdapter(Context c, List<College> collegelist) {
         this.c = c;
         this.collegelist = collegelist;
     }

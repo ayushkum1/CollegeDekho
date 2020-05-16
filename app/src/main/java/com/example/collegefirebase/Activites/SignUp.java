@@ -1,4 +1,4 @@
-package com.example.collegefirebase;
+package com.example.collegefirebase.Activites;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.collegefirebase.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -81,23 +82,25 @@ public class SignUp extends AppCompatActivity {
                 String pwd = signuppwd.getText().toString();
                 if(TextUtils.isEmpty(email) || TextUtils.isEmpty(pwd)) {
                     Toast.makeText(SignUp.this, "Enter full details", Toast.LENGTH_LONG).show();
+                    return;
                 }
                 else{
-                    auth.signInWithEmailAndPassword(email,pwd)
-                            .addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if(task.isSuccessful()){
-                                        Toast.makeText(SignUp.this,"success",Toast.LENGTH_LONG).show();
-                                        Intent myintent = new Intent(SignUp.this,MainActivity.class);
-                                        startActivity(myintent);
-                                        finish();
-                                    }
-                                    else{
-                                        Toast.makeText(SignUp.this,"login failed",Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            });
+
+//                    auth.signInWithEmailAndPassword(email,pwd)
+//                            .addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<AuthResult> task) {
+//                                    if(task.isSuccessful()){
+//                                        Toast.makeText(SignUp.this,"success",Toast.LENGTH_LONG).show();
+//                                        Intent myintent = new Intent(SignUp.this,MainActivity.class);
+//                                        startActivity(myintent);
+//                                        finish();
+//                                    }
+//                                    else{
+//                                        Toast.makeText(SignUp.this,"login failed",Toast.LENGTH_LONG).show();
+//                                    }
+//                                }
+//                            });
                 }
             }
         });

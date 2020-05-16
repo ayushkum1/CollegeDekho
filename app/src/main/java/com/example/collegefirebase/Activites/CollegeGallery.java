@@ -1,21 +1,20 @@
-package com.example.collegefirebase;
+package com.example.collegefirebase.Activites;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.example.collegefirebase.Model.College;
+import com.example.collegefirebase.Utils.CollegeImageGrid;
+import com.example.collegefirebase.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CollegeGallery extends AppCompatActivity {
     public CollegeImageGrid imagegrid;

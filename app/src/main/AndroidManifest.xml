@@ -17,8 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SignUpDetails"></activity>
-        <activity android:name=".ResetPassword" />
+        <activity android:name=".Activites.SignUpDetails"></activity>
+        <activity android:name=".Activites.ResetPassword" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -32,12 +32,12 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".CollegeMapLocation"
+            android:name=".Activites.CollegeMapLocation"
             android:label="@string/title_activity_college_map_location" />
-        <activity android:name=".CollegeGallery" />
-        <activity android:name=".CollegeDetails" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".SignUp">
+        <activity android:name=".Activites.CollegeGallery" />
+        <activity android:name=".Activites.CollegeDetails" />
+        <activity android:name=".Activites.MainActivity" />
+        <activity android:name=".Activites.SignUp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,5 +1,5 @@
 // this is the model class for my database.
-package com.example.collegefirebase;
+package com.example.collegefirebase.Model;
 
 import java.util.List;
 
