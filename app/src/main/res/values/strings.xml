@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">CollegeFirebase</string>
     <string name="title_activity_college_map_location">Map</string>
+    <string name="facebook_app_id">2643624865959332</string>
+    <string name="fb_login_protocol_scheme">fb2643624865959332</string>
 </resources>

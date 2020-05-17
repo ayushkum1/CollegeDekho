@@ -16,6 +16,8 @@ import com.example.collegefirebase.Common.CurrentUser;
 import com.example.collegefirebase.Model.College;
 import com.example.collegefirebase.Utils.CollegeAdapter;
 import com.example.collegefirebase.R;
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -33,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private AccessToken accessToken;
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleSignInOptions gso;
     private FirebaseAuth auth;
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toast.makeText(this, CurrentUser.currentUser.getFname(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, CurrentUser.currentUser.getFname(), Toast.LENGTH_SHORT).show();
         //for logout from the options menu
         auth = FirebaseAuth.getInstance();
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -98,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.logout:
             {
-                if(auth.getCurrentUser() == null){
+                accessToken = AccessToken.getCurrentAccessToken();
+                if(auth.getCurrentUser() == null && accessToken == null){
                     mGoogleSignInClient.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {
                         public void onComplete(@NonNull Task<Void> task) {
                             Toast.makeText(MainActivity.this, "logged out", Toast.LENGTH_LONG).show();
@@ -113,8 +117,12 @@ public class MainActivity extends AppCompatActivity {
                     });
 
                 }
-                else{
-                    auth.signOut();
+                else if(auth.getCurrentUser() == null && gso.getAccount() == null){
+                    LoginManager.getInstance().logOut();
+                    startActivity(new Intent(MainActivity.this, SignUp.class));
+                }
+                else if(gso.getAccount() == null && accessToken == null){
+                auth.signOut();
                 }
             }
             break;

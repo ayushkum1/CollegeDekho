@@ -16,6 +16,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.collegefirebase.R;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.LoginStatusCallback;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -27,6 +35,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Arrays;
+
 public class SignUp extends AppCompatActivity {
 
     EditText signupmail,signuppwd;
@@ -35,6 +45,9 @@ public class SignUp extends AppCompatActivity {
     private FirebaseAuth auth;
     private static final int RC_SIGN_IN = 1;
     private static final String TAG = "signup";
+    private static final String EMAIL = "email";
+    private Button facebookloginButton;
+    private CallbackManager callbackManager;
 
     @SuppressLint("WrongViewCast")
 
@@ -57,16 +70,78 @@ public class SignUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
+        //for google sign in
         final GoogleSignInClient mGoogleSignInClient;
+        //callback for facebook login
+        callbackManager = CallbackManager.Factory.create();
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+
 
         signupmail = findViewById(R.id.email_edt_text);
         signuppwd = findViewById(R.id.pass_edt_text);
         auth = FirebaseAuth.getInstance();
-        googlesignin = findViewById(R.id.google_signin_button);
+        googlesignin = findViewById(R.id.google_signin_button); //google sign in
         signupbtn = findViewById(R.id.signup_btn);
         loginbtn = findViewById(R.id.login_btn);
         forgotpass = findViewById(R.id.forgotpwd);
+        facebookloginButton = findViewById(R.id.facebook_login_button); // facebook sign in
+
+        // facebook sign in
+        //more details to be taken like profile picture etc from setPermissions. this will be as a list
+        ((LoginButton) facebookloginButton).setPermissions(Arrays.asList(EMAIL));
+        ((LoginButton) facebookloginButton).registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+            }
+
+            @Override
+            public void onCancel() {
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+            }
+        });
+
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                // facebook login button changes its text to logout and performs logout function.
+                //we have created a custom button in options, so dont want it. hence setting its visibility to gone.
+                facebookloginButton.setVisibility(View.GONE);
+                startActivity(new Intent(SignUp.this, MainActivity.class));
+                Toast.makeText(SignUp.this, "success (LoginManager)", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancel() {
+                Toast.makeText(SignUp.this, "cancelled", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Toast.makeText(SignUp.this, "Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //this is to check for express login.
+        LoginManager.getInstance().retrieveLoginStatus(this, new LoginStatusCallback() {
+            @Override
+            public void onCompleted(AccessToken accessToken) {
+                // User was previously logged in, can log them in directly here.
+                // If this callback is called, a popup notification appears that says
+                // "Logged in as <User Name>
+            }
+            @Override
+            public void onFailure() {
+                // No access token could be retrieved for the user
+            }
+            @Override
+            public void onError(Exception exception) {
+                // An error occurred
+            }
+        });
 
         //requesting basic details of user like email and others, currently requesting only  email
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -142,7 +217,11 @@ public class SignUp extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestcode, int resultcode, Intent data){
         super.onActivityResult(requestcode,resultcode,data);
-        // signs in the user with google
+
+        //this is for facebook and signs in the user with facebook
+        callbackManager.onActivityResult(requestcode, resultcode, data);
+
+        // this is for google and signs in the user with google
         if(requestcode == RC_SIGN_IN){
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);

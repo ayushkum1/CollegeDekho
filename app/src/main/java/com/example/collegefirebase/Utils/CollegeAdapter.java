@@ -45,7 +45,14 @@ public class CollegeAdapter extends RecyclerView.Adapter<CollegeAdapter.CollegeV
     public void onBindViewHolder(@NonNull final CollegeAdapter.CollegeViewHolder holder, final int position) {
         holder.collegename.setText(collegelist.get(position).getName());
         holder.rating.setText(collegelist.get(position).getRating());
-        Picasso.with(c).load(collegelist.get(position).getImage()).into(holder.collegeimage);
+        //need to check if image urls is there or not, if empty, it will display the given url image.
+        if(collegelist.get(position).getImage().isEmpty()){
+            Picasso.with(c).load("https://w7.pngwing.com/pngs/174/558/png-transparent-black-sad-emoji-illustration-face-sadness-smiley-computer-icons-sad-child-people-emoticon.png")
+                    .into(holder.collegeimage);
+        }
+        else{
+            Picasso.with(c).load(collegelist.get(position).getImage()).into(holder.collegeimage);
+        }
         //onclick listeners for buttons in the cardview
         holder.collegedetails_btn.setOnClickListener(new View.OnClickListener() {
             @Override

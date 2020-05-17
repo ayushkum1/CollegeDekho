@@ -124,6 +124,7 @@ public class SignUpDetails extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()){
                         Toast.makeText(SignUpDetails.this, "That email already exists. Sign in instead", Toast.LENGTH_SHORT).show();
+                        return;
                     }
                     else {
                         if (password.equals(cpwd)){
