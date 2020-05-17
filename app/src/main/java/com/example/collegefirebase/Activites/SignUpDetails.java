@@ -26,6 +26,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.util.UUID;
 
 public class SignUpDetails extends AppCompatActivity {
@@ -73,6 +75,8 @@ public class SignUpDetails extends AppCompatActivity {
         password = userpwd.getText().toString().trim();
         cpwd = usercnfmpwd.getText().toString().trim();
         phone = userphoneno.getText().toString().trim();
+
+
 
         if(TextUtils.isEmpty(fname)){
             Toast.makeText(getApplicationContext(), "Pls Enter First Name", Toast.LENGTH_LONG).show();
@@ -128,7 +132,10 @@ public class SignUpDetails extends AppCompatActivity {
                     }
                     else {
                         if (password.equals(cpwd)){
-                            final Users user = new Users(userid, fname, lname, email, password, phone);
+
+                            final String generateHashedPass = BCrypt.hashpw(password, BCrypt.gensalt());
+
+                            final Users user = new Users(userid, fname, lname, email, generateHashedPass, phone);
 
                             ref.child(email.replace(".","_")).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override

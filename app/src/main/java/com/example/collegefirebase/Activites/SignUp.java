@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.collegefirebase.Common.CurrentUser;
+import com.example.collegefirebase.Model.Users;
 import com.example.collegefirebase.R;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -34,6 +36,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Arrays;
 
@@ -43,6 +52,7 @@ public class SignUp extends AppCompatActivity {
     Button signupbtn,loginbtn,googlesignin;
     TextView forgotpass;
     private FirebaseAuth auth;
+    DatabaseReference ref;
     private static final int RC_SIGN_IN = 1;
     private static final String TAG = "signup";
     private static final String EMAIL = "email";
@@ -77,6 +87,7 @@ public class SignUp extends AppCompatActivity {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
+        ref = FirebaseDatabase.getInstance().getReference("UserData");
 
         signupmail = findViewById(R.id.email_edt_text);
         signuppwd = findViewById(R.id.pass_edt_text);
@@ -154,13 +165,31 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String email = signupmail.getText().toString();
-                String pwd = signuppwd.getText().toString();
+                final String pwd = signuppwd.getText().toString();
                 if(TextUtils.isEmpty(email) || TextUtils.isEmpty(pwd)) {
                     Toast.makeText(SignUp.this, "Enter full details", Toast.LENGTH_LONG).show();
                     return;
                 }
                 else{
+                    ref.child(email.replace(".", "_")).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Users user = dataSnapshot.getValue(Users.class);
+                            if(BCrypt.checkpw(pwd,user.getPassword())){
+                                CurrentUser.currentUser = user;
+                                startActivity(new Intent(SignUp.this, MainActivity.class));
+                                Toast.makeText(SignUp.this, "Welcome " +user.getFname(), Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(SignUp.this, "Check your credentials", Toast.LENGTH_SHORT).show();
+                            }
+                        }
 
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
 //                    auth.signInWithEmailAndPassword(email,pwd)
 //                            .addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
 //                                @Override

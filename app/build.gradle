@@ -37,6 +37,9 @@ dependencies {
     //Facebook Log In implementation
     implementation 'com.facebook.android:facebook-login:[5,6)'
 
+    //BCrypt implementation
+    implementation "org.mindrot:jbcrypt:0.4"
+
     // FirebaseUI for Cloud Firestore
     implementation 'com.firebaseui:firebase-ui-firestore:6.2.1'
 
