@@ -5,10 +5,10 @@ import java.util.List;
 
 public class College {
     private String id, name, address, departments, about, placements, image, rating, latitude, longitude;
-    private List<String> imageurls;
+    private List<String> imageurls, videourls;
 
 
-    public College(String id, String name, String address, String departments, String about, String placements, String image, String rating, List<String> imageurls) {
+    public College(String id, String name, String address, String departments, String about, String placements, String image, String rating, List<String> imageurls, List<String> videourls) {
         this.name = name;
         this.address = address;
         this.departments = departments;
@@ -18,6 +18,7 @@ public class College {
         this.rating = rating;
         this.id = id;
         this.imageurls = imageurls;
+        this.videourls = videourls;
     }
 
     public College() {
@@ -41,6 +42,14 @@ public class College {
 
     public String getName() {
         return name;
+    }
+
+    public List<String> getVideourls() {
+        return videourls;
+    }
+
+    public void setVideourls(List<String> videourls) {
+        this.videourls = videourls;
     }
 
     public void setName(String name) {

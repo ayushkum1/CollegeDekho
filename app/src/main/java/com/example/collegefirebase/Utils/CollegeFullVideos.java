@@ -14,16 +14,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class CollegeImageGrid extends BaseAdapter {
+public class CollegeFullVideos extends BaseAdapter {
 
     private Context c;
     private List<String> collegelist; //for storing the list of urls in imageurls, it isa list of multiple strings in it.
-    private Boolean loadAll = false;
-    public void setTrue(){
-        loadAll = true;
-    }
 
-    public CollegeImageGrid(Context c, List<String> collegelist) {
+    public CollegeFullVideos(Context c, List<String> collegelist) {
         this.c = c;
         this.collegelist = collegelist;
     }
@@ -31,8 +27,7 @@ public class CollegeImageGrid extends BaseAdapter {
     @Override
     public int getCount() {
         //troubleshoot when null found
-        if(loadAll) return collegelist.size(); //returns the size of the list
-        return 2; //this will set only the required numbers of images
+        return collegelist.size(); //returns the size of the list
     }
 
     @Override
@@ -53,10 +48,10 @@ public class CollegeImageGrid extends BaseAdapter {
 
         if(convertView == null){
             grid = new View(c);
-            grid = inflater.inflate(R.layout.collegeimagegrid,null);
-            ImageView gridImage = grid.findViewById(R.id.image_grid_id);
+            grid = inflater.inflate(R.layout.activity_college_full_videos,null);
+            ImageView gridVideo = grid.findViewById(R.id.video_grid_id);
             //load images to image view with picasso. there will be no getImage() in this statement
-            Picasso.with(c).load(collegelist.get(position)).into(gridImage, new Callback() {
+            Picasso.with(c).load(collegelist.get(position)).into(gridVideo, new Callback() {
                 @Override
                 public void onSuccess() {
 
@@ -75,3 +70,6 @@ public class CollegeImageGrid extends BaseAdapter {
     }
 
 }
+
+
+

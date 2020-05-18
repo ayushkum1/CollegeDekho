@@ -175,6 +175,7 @@ public class SignUp extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             Users user = dataSnapshot.getValue(Users.class);
+                            //crypting the password and matching it with the crypted password stored in database
                             if(BCrypt.checkpw(pwd,user.getPassword())){
                                 CurrentUser.currentUser = user;
                                 startActivity(new Intent(SignUp.this, MainActivity.class));
