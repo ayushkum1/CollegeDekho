@@ -1,6 +1,7 @@
 package com.example.collegefirebase.Utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.collegefirebase.Activites.SlideImage;
 import com.example.collegefirebase.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -60,6 +62,15 @@ public class CollegeFullImages extends BaseAdapter {
                 @Override
                 public void onError() {
                     Toast.makeText(c, "Error", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            gridImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent in = new Intent(c, SlideImage.class);
+
+                    Toast.makeText(c, "Clicked", Toast.LENGTH_SHORT).show();
                 }
             });
         }
