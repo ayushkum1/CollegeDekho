@@ -1,13 +1,18 @@
 package com.example.collegefirebase.Activites;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
 
+import com.example.collegefirebase.Model.College;
 import com.example.collegefirebase.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.veinhorn.scrollgalleryview.ScrollGalleryView;
 import com.veinhorn.scrollgalleryview.builder.GallerySettings;
 
@@ -23,7 +28,37 @@ public class SlideImage extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slide_image);
+        String college_id = getIntent().getStringExtra("college_id");
+        db = FirebaseDatabase.getInstance();
+        ref = db.getReference("collegedata");
 
+        ref.child(college_id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                College college = dataSnapshot.getValue(College.class);
+                galleryView = ScrollGalleryView
+                .from((ScrollGalleryView) findViewById(R.id.scroll_gallery_view))
+                .settings(
+                        GallerySettings
+                                .from(getSupportFragmentManager())
+                                .thumbnailSize(100)
+                                .enableZoom(true)
+                                .build()
+                ).build();
+                for (String url : college.getImageurls()){
+                    galleryView.addMedia(image(url));
+                }
+
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 //        galleryView = ScrollGalleryView
 //                .from((ScrollGalleryView) findViewById(R.id.scroll_gallery_view))

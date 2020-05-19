@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.collegefirebase.Common.CurrentUser;
+import com.example.collegefirebase.Common.Common;
 import com.example.collegefirebase.Model.Users;
 import com.example.collegefirebase.R;
 import com.facebook.AccessToken;
@@ -31,9 +31,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -177,7 +175,7 @@ public class SignUp extends AppCompatActivity {
                             Users user = dataSnapshot.getValue(Users.class);
                             //crypting the password and matching it with the crypted password stored in database
                             if(BCrypt.checkpw(pwd,user.getPassword())){
-                                CurrentUser.currentUser = user;
+                                Common.currentUser = user;
                                 startActivity(new Intent(SignUp.this, MainActivity.class));
                                 Toast.makeText(SignUp.this, "Welcome " +user.getFname(), Toast.LENGTH_SHORT).show();
                             }
