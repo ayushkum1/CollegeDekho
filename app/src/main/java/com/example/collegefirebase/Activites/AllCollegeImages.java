@@ -21,17 +21,17 @@ public class AllCollegeImages extends AppCompatActivity {
     private static final String TAG = "CollegeGallery";
     public GridView grid_image;
     public DatabaseReference ref;
-    private String collegeimage;
+    private String collegeid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_college_images);
         ref = FirebaseDatabase.getInstance().getReference("collegedata");
-        collegeimage = getIntent().getStringExtra("image");
+        collegeid = getIntent().getStringExtra("image");
         grid_image = findViewById(R.id.grid_image);
 
-        ref.child(String.valueOf(collegeimage)).addValueEventListener(new ValueEventListener() {
+        ref.child(String.valueOf(collegeid)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 College clg = dataSnapshot.getValue(College.class);
