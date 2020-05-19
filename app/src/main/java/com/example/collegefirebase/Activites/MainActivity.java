@@ -12,7 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.collegefirebase.Common.CurrentUser;
+import com.example.collegefirebase.Common.Common;
 import com.example.collegefirebase.Model.College;
 import com.example.collegefirebase.Utils.CollegeAdapter;
 import com.example.collegefirebase.R;
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(CurrentUser.currentUser != null){
+        if(Common.currentUser != null){
             Intent i = new Intent(Intent.ACTION_MAIN);
             i.addCategory(Intent.CATEGORY_HOME);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

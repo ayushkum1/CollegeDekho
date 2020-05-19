@@ -43,7 +43,7 @@ public class CollegeFullImages extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View grid;
         //inflate the grid layout when called
         LayoutInflater inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -69,7 +69,8 @@ public class CollegeFullImages extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     Intent in = new Intent(c, SlideImage.class);
-
+                    in.putExtra("college_id", collegelist.get(position));
+                    c.startActivity(in);
                     Toast.makeText(c, "Clicked", Toast.LENGTH_SHORT).show();
                 }
             });
