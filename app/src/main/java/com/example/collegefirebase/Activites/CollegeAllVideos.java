@@ -17,10 +17,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class CollegeAllVideos extends AppCompatActivity {
-    public CollegeFullVideos videogrid;
     private static final String TAG = "CollegeGallery";
-    public GridView grid_video;
     public DatabaseReference ref;
     private String collegevideo;
 
@@ -30,14 +33,12 @@ public class CollegeAllVideos extends AppCompatActivity {
         setContentView(R.layout.activity_college_all_videos);
         ref = FirebaseDatabase.getInstance().getReference("collegedata");
         collegevideo = getIntent().getStringExtra("video");
-        grid_video = findViewById(R.id.grid_video);
 
         ref.child(String.valueOf(collegevideo)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 College clg = dataSnapshot.getValue(College.class);
-                videogrid = new CollegeFullVideos(CollegeAllVideos.this,clg.getVideourls());
-                grid_video.setAdapter(videogrid); //check error, getCount is null, crashes application.
+
             }
 
             @Override
@@ -45,6 +46,25 @@ public class CollegeAllVideos extends AppCompatActivity {
                 Toast.makeText(CollegeAllVideos.this, "No images", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public static String getYoutubeVideoId(String youtubeUrl) {
+        String video_id = "";
+        if (youtubeUrl != null && youtubeUrl.trim().length() > 0 && youtubeUrl.startsWith("http")) {
+
+
+
+            String expression = "^.*?(?:list)=(.*?)(?:&|$)";
+
+            CharSequence input = youtubeUrl;
+            Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(input);
+            if (matcher.matches()) {
+                String groupIndex1 = matcher.group(1);
+                video_id = groupIndex1;
+            }
+        }
+        return video_id;
     }
 }
 

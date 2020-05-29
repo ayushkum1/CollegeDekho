@@ -2,6 +2,7 @@ package com.example.collegefirebase.Activites;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,40 +11,49 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.collegefirebase.Fragments.YoutubeVideoList;
 import com.example.collegefirebase.Model.College;
 import com.example.collegefirebase.Utils.CollegeImageGrid;
 import com.example.collegefirebase.R;
-import com.example.collegefirebase.Utils.VideoGrid;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class CollegeGallery extends AppCompatActivity {
     public CollegeImageGrid imagegrid;
-    public VideoGrid videogrid;
+//    public VideoGrid videogrid;
     private static final String TAG = "CollegeGallery";
     public GridView grid_image, grid_video;
     public DatabaseReference ref;
-    private String collegeimage;
+    private String collegeid;
     private TextView moreimages, morevideos;
+    private String playlistid;
+
+    public void setPlayid(String playlistid) {
+        this.playlistid = playlistid;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_college_gallery);
+
         ref = FirebaseDatabase.getInstance().getReference("collegedata");
         //this will get the data from previous intent
-        collegeimage = getIntent().getStringExtra("gallery");
+        collegeid = getIntent().getStringExtra("gallery");
         grid_image = findViewById(R.id.grid_image);
-        grid_video = findViewById(R.id.grid_video); //for grid view of videos
+//        grid_video = findViewById(R.id.grid_video); //for grid view of videos
 
         moreimages = findViewById(R.id.more_images);
         morevideos = findViewById(R.id.more_videos);
 
         //a list of string will  be passed to  imagegrid object
-        ref.child(String.valueOf(collegeimage)).addValueEventListener(new ValueEventListener() {
+        ref.child(String.valueOf(collegeid)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                //object of College class to get getImageurls() which has the list of urls
@@ -53,8 +63,18 @@ public class CollegeGallery extends AppCompatActivity {
                 //setting adapter to grid with the list of urls
                 grid_image.setAdapter(imagegrid); //check error, getCount is null, crashes application.
                 //for video,currently taking same image urls, checking layout
-                videogrid = new VideoGrid(CollegeGallery.this,clg.getVideourls());
-                grid_video.setAdapter(videogrid);
+//                videogrid = new VideoGrid(CollegeGallery.this,clg.getVideourls());
+//                grid_video.setAdapter(videogrid);
+//                String id = getYoutubeVideoId(clg.getVideourls());
+//                String playid = id;
+                String playid = getYoutubeVideoId(clg.getVideourls());
+//                bun.putString();
+
+                //fragment code
+                YoutubeVideoList yt = new YoutubeVideoList();
+                FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
+                tr.replace(R.id.youtube_frag, yt.newInstance(playid)).commit();
+//                int frag = getSupportFragmentManager().beginTransaction().add(R.id.youtube_frag, YoutubeVideoList.newInstance(playid),"YoutubeVideoList").commit();
             }
 
             @Override
@@ -67,19 +87,37 @@ public class CollegeGallery extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent image_in = new Intent(CollegeGallery.this,AllCollegeImages.class);
-                image_in.putExtra("image",collegeimage);
+                image_in.putExtra("image",collegeid);
                 startActivity(image_in);
             }
         });
 
+        //will take to activity with only playlist video list fragment
         morevideos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent video_in = new Intent(CollegeGallery.this,CollegeAllVideos.class);
-                video_in.putExtra("video",collegeimage);
-                startActivity(video_in);
+                startActivity(new Intent(CollegeGallery.this, CompleteVideoList.class));
             }
         });
+
+    }
+
+    //function to extract playlist id
+    public static String getYoutubeVideoId(String youtubeUrl) {
+        String video_id = "";
+        if (youtubeUrl != null && youtubeUrl.trim().length() > 0 && youtubeUrl.startsWith("http")) {
+
+            String expression = "^.*?(?:list)=(.*?)(?:&|$)";
+
+            CharSequence input = youtubeUrl;
+            Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(input);
+            if (matcher.matches()) {
+                String groupIndex1 = matcher.group(1);
+                video_id = groupIndex1;
+            }
+        }
+        return video_id;
     }
 
 }

@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Utils.CollegeFullImages">
-    <TextView
-        android:id="@+id/videos"
-        android:layout_width="match_parent"
+    tools:context=".Activites.CompleteVideoList">
+
+    <fragment
+        android:id="@+id/youtube_frag"
+        android:name="com.example.collegefirebase.Fragments.YoutubeVideoList"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="College Videos"
-        android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
