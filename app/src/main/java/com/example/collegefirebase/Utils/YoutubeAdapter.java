@@ -32,7 +32,6 @@ public class YoutubeAdapter extends RecyclerView.Adapter<YoutubeVideoViewHolder>
     @Override
     public YoutubeVideoViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.activity_youtube_video_view,parent, false);
-
         return new YoutubeVideoViewHolder(view) ;
     }
 
@@ -45,7 +44,7 @@ public class YoutubeAdapter extends RecyclerView.Adapter<YoutubeVideoViewHolder>
             @Override
             public void onClick(View view, int position) {
                 Intent intent = new Intent(context, YoutubeVideoPlayer.class);
-                intent.putExtra("videoId",vidList.get(position).getVideoId());
+                intent.putExtra("videoId",vidList.get(position).getVideoId()); // pass the videoid to play the particular video
                 context.startActivity(intent);
             }
         });

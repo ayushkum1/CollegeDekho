@@ -14,7 +14,7 @@ import com.google.android.youtube.player.YouTubePlayerView;
 public class YoutubeVideoPlayer extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
     private static final int RECOVERY_REQUEST = 1;
-    private YouTubePlayerView youTubeView;
+    private YouTubePlayerView youTubeView; //view of youtube player in the xml
     String id;
 
     @Override
@@ -22,6 +22,7 @@ public class YoutubeVideoPlayer extends YouTubeBaseActivity implements YouTubePl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_youtube_video_player);
         youTubeView = findViewById(R.id.youtube_view);
+        //APIKEY in Config
         youTubeView.initialize(YoutubeConfig.YOUTUBE_API_KEY, this);
         id = getIntent().getStringExtra("videoId");
     }
@@ -29,7 +30,7 @@ public class YoutubeVideoPlayer extends YouTubeBaseActivity implements YouTubePl
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
         if (!wasRestored) {
-            player.cueVideo(id);
+            player.cueVideo(id); //play the video with the id, cueVideo sets the url with videoid
         }
     }
 
@@ -45,7 +46,6 @@ public class YoutubeVideoPlayer extends YouTubeBaseActivity implements YouTubePl
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 
     @Override

@@ -44,8 +44,8 @@
             android:label="@string/title_activity_college_map_location" />
         <activity android:name=".Activites.CollegeGallery" />
         <activity android:name=".Activites.CollegeDetails" />
-        <activity android:name=".Activites.SignUp" />
-        <activity android:name=".Activites.MainActivity">
+        <activity android:name=".Activites.MainActivity" />
+        <activity android:name=".Activites.SignUp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

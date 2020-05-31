@@ -1,7 +1,6 @@
 package com.example.collegefirebase.Fragments;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,10 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
-import com.example.collegefirebase.Activites.CollegeGallery;
 import com.example.collegefirebase.Model.YoutubeVideoModel;
 import com.example.collegefirebase.R;
 import com.example.collegefirebase.Utils.YoutubeAdapter;
@@ -34,97 +30,73 @@ import java.util.List;
 
 public class YoutubeVideoList extends Fragment {
 
-    private static String ARG_Param1;
-    private static String id;
+    private String id;
     List<YoutubeVideoModel> vids;
-    Button btn;
     YoutubeAdapter adapter;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager manager;
-    String mparam1;
 
     public YoutubeVideoList() {
-    }
-
-    //retrieving playlist id from the previous activity
-    public static YoutubeVideoList newInstance(String id) {
-        YoutubeVideoList yt = new YoutubeVideoList();
-        Bundle args = new Bundle();
-        args.putString(ARG_Param1, id);
-        yt.setArguments(args);
-        return yt;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mparam1 = getArguments().getString(ARG_Param1);
+        Bundle args = this.getArguments();
+        if(args != null){
+            //getting the playlist id from bundle passsed from previous activity
+            id = args.getString("test");
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_youtube_video_list, container, false);
-    }
-
-    @Override
-    public  void onViewCreated(View container, Bundle savedInstanceState) {
-        super.onViewCreated(container, savedInstanceState);
-        recyclerView = container.findViewById(R.id.vidReclycer);
-        manager = new LinearLayoutManager(getActivity());
-//        adapter = new YoutubeAdapter(getContext(),vids);
-        recyclerView.setLayoutManager(manager);
-        recyclerView.setHasFixedSize(false);
-//        recyclerView.setAdapter(adapter);
-
-        //String url = "https://www.googleapis.com/youtube/v3/playlistItems?key=AIzaSyBmISPZAjsrku2_yKLcTW4Y6qq6aqlht-0&playlistId="+id+"&part=snippet&maxResults=26";
-
-        String id = mparam1;
-        //right here, id has the playlist id
-        System.out.println("this is the playlist id------------------->"+id);
-        String url = "https://www.googleapis.com/youtube/v3/playlistItems?key=AIzaSyBmISPZAjsrku2_yKLcTW4Y6qq6aqlht-0&playlistId="+id+"&part=snippet&maxResults=36";
-        //even url has the value but the list is not shown and id changes to null
-        System.out.println(url);
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-
-        StringRequest request = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        vids = new ArrayList<>();
-                        try {
-                            JSONObject mainObject = new JSONObject(response);
-                            JSONArray itemArray = (JSONArray) mainObject.get("items");
-                            for (int i = 0; i < itemArray.length(); i++) {
-                                String title = itemArray.getJSONObject(i).getJSONObject("snippet").getString("title");
-//                                System.out.println(title);
-                                String url = itemArray.getJSONObject(i).getJSONObject("snippet").getJSONObject("thumbnails").getJSONObject("maxres").getString("url");
-                                String vidid = itemArray.getJSONObject(i).getJSONObject("snippet").getJSONObject("resourceId").getString("videoId");
-                                YoutubeVideoModel vid = new YoutubeVideoModel(title, url, vidid);
-                                vids.add(vid);
-                                for (YoutubeVideoModel y : vids) {
-//                                        System.out.println("ID OF THE VVVVV" + y.toString());
+            // we have to find views in the layout, we cannot use conatainer as its the Viewgroup. so we define "v" which will be used to identify the views.
+            View v = inflater.inflate(R.layout.fragment_youtube_video_list, container, false);
+            //recycler view to display the list of videos. we can also change it to grid by only displaying the thumbnail.
+            recyclerView = v.findViewById(R.id.vidReclycer);
+            //in fragment we need getActivity or getContext instead of "this" or "YoutubeVideoList.this"
+            manager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(manager);
+            recyclerView.setHasFixedSize(false);
+            final String yturl = "https://www.googleapis.com/youtube/v3/playlistItems?key=AIzaSyBmISPZAjsrku2_yKLcTW4Y6qq6aqlht-0&playlistId=" + id + "&part=snippet&maxResults=36";
+            RequestQueue queue = Volley.newRequestQueue(getContext());
+            // Volley request using url with the playlistid in it
+            StringRequest request = new StringRequest(Request.Method.GET, yturl,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            vids = new ArrayList<>();
+                            try {
+                                JSONObject mainObject = new JSONObject(response);
+                                JSONArray itemArray = (JSONArray) mainObject.get("items");
+                                for (int i = 0; i < itemArray.length(); i++) {
+                                    //extracting 3 things : title, thumbnail, videoid(need it to play video in the player activity).
+                                    String title = itemArray.getJSONObject(i).getJSONObject("snippet").getString("title");
+                                    String url = itemArray.getJSONObject(i).getJSONObject("snippet").getJSONObject("thumbnails").getJSONObject("maxres").getString("url");
+                                    String vidid = itemArray.getJSONObject(i).getJSONObject("snippet").getJSONObject("resourceId").getString("videoId");
+                                    YoutubeVideoModel vid = new YoutubeVideoModel(title, url, vidid);
+                                    // add all the details to the list
+                                    vids.add(vid);
                                 }
+                                adapter = new YoutubeAdapter(getActivity(), vids);
+                                recyclerView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            adapter = new YoutubeAdapter(getContext(), vids);
-                            recyclerView.setAdapter(adapter);
-                            recyclerView.getAdapter().notifyDataSetChanged();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
 
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                Log.e("Error in request", error.getMessage());
-            }
-        });
-        queue.add(request);
-        }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                Log.e("Error in request", error.getMessage());
+                }
+            });
+            queue.add(request);
+        return v;
     }
+}
 
 

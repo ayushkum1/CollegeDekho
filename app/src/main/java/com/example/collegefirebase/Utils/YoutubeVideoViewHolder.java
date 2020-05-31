@@ -20,10 +20,6 @@ public class YoutubeVideoViewHolder extends RecyclerView.ViewHolder implements V
         textVideoTitle = itemView.findViewById(R.id.videoTitle);
         imgThumbnail = itemView.findViewById(R.id.imgThumbnail);
         itemView.setOnClickListener(this);
-
-
-
-
     }
     // custom click listener
     public void setItemClickListner(ItemClickListener itemClickListener){
@@ -33,8 +29,5 @@ public class YoutubeVideoViewHolder extends RecyclerView.ViewHolder implements V
     @Override
     public void onClick(View v) {
         itemClickListener.onClick(v,getAdapterPosition());
-
-
-
     }
 }

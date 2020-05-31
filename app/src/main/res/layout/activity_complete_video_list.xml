@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Activites.CompleteVideoList">
 
-    <fragment
+    <FrameLayout
         android:id="@+id/youtube_frag"
         android:name="com.example.collegefirebase.Fragments.YoutubeVideoList"
         android:layout_width="wrap_content"

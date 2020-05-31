@@ -26,17 +26,12 @@ import java.util.regex.Pattern;
 
 public class CollegeGallery extends AppCompatActivity {
     public CollegeImageGrid imagegrid;
-//    public VideoGrid videogrid;
     private static final String TAG = "CollegeGallery";
     public GridView grid_image, grid_video;
     public DatabaseReference ref;
     private String collegeid;
     private TextView moreimages, morevideos;
     private String playlistid;
-
-    public void setPlayid(String playlistid) {
-        this.playlistid = playlistid;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +42,6 @@ public class CollegeGallery extends AppCompatActivity {
         //this will get the data from previous intent
         collegeid = getIntent().getStringExtra("gallery");
         grid_image = findViewById(R.id.grid_image);
-//        grid_video = findViewById(R.id.grid_video); //for grid view of videos
 
         moreimages = findViewById(R.id.more_images);
         morevideos = findViewById(R.id.more_videos);
@@ -58,23 +52,20 @@ public class CollegeGallery extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                //object of College class to get getImageurls() which has the list of urls
                 College clg = dataSnapshot.getValue(College.class);
+
                 //setting the list to imagegrid, passing url from this activity to imageview.
                 imagegrid = new CollegeImageGrid(CollegeGallery.this,clg.getImageurls());
                 //setting adapter to grid with the list of urls
                 grid_image.setAdapter(imagegrid); //check error, getCount is null, crashes application.
-                //for video,currently taking same image urls, checking layout
-//                videogrid = new VideoGrid(CollegeGallery.this,clg.getVideourls());
-//                grid_video.setAdapter(videogrid);
-//                String id = getYoutubeVideoId(clg.getVideourls());
-//                String playid = id;
+                //extracting playlist id
                 String playid = getYoutubeVideoId(clg.getVideourls());
-//                bun.putString();
-
-                //fragment code
-                YoutubeVideoList yt = new YoutubeVideoList();
-                FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
-                tr.replace(R.id.youtube_frag, yt.newInstance(playid)).commit();
-//                int frag = getSupportFragmentManager().beginTransaction().add(R.id.youtube_frag, YoutubeVideoList.newInstance(playid),"YoutubeVideoList").commit();
+                // send  playlist id in the bundle as arguments. we will use keys to extract the value of key.
+                Bundle bun = new Bundle();
+                YoutubeVideoList firstfrag = new YoutubeVideoList();
+                bun.putString("test", playid); //sending to fragment
+                firstfrag.setArguments(bun);
+                // this will save the changes and keep the value even if screen is rotated
+                getSupportFragmentManager().beginTransaction().add(R.id.youtube_frag, firstfrag).commit();
             }
 
             @Override
@@ -96,7 +87,10 @@ public class CollegeGallery extends AppCompatActivity {
         morevideos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CollegeGallery.this, CompleteVideoList.class));
+                // passing the college id,  which will be used to extract playlist id fro videourls.
+                Intent in = new Intent(CollegeGallery.this, CompleteVideoList.class);
+                in.putExtra("collegeid", collegeid);
+                startActivity(in);
             }
         });
 
@@ -106,15 +100,15 @@ public class CollegeGallery extends AppCompatActivity {
     public static String getYoutubeVideoId(String youtubeUrl) {
         String video_id = "";
         if (youtubeUrl != null && youtubeUrl.trim().length() > 0 && youtubeUrl.startsWith("http")) {
-
+            // check for "list=", extract the value of list
             String expression = "^.*?(?:list)=(.*?)(?:&|$)";
-
             CharSequence input = youtubeUrl;
             Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(input);
             if (matcher.matches()) {
-                String groupIndex1 = matcher.group(1);
-                video_id = groupIndex1;
+                //we need only list and so we are checking for 1 group that is list=
+                String group1 = matcher.group(1);
+                video_id = group1;
             }
         }
         return video_id;
