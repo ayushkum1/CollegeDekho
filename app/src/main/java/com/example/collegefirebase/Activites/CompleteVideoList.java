@@ -37,7 +37,7 @@ public class CompleteVideoList extends AppCompatActivity {
                 String id = getYoutubeVideoId(playid);
                 Bundle bun = new Bundle();
                 YoutubeVideoList firstfrag = new YoutubeVideoList();
-                bun.putString("test", id);
+                bun.putString("listid", id);
                 firstfrag.setArguments(bun);
                 getSupportFragmentManager().beginTransaction().add(R.id.youtube_frag, firstfrag).commit();
             }

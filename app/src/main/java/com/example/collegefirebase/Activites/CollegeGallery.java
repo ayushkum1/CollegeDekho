@@ -62,7 +62,7 @@ public class CollegeGallery extends AppCompatActivity {
                 // send  playlist id in the bundle as arguments. we will use keys to extract the value of key.
                 Bundle bun = new Bundle();
                 YoutubeVideoList firstfrag = new YoutubeVideoList();
-                bun.putString("test", playid); //sending to fragment
+                bun.putString("listid", playid); //sending to fragment
                 firstfrag.setArguments(bun);
                 // this will save the changes and keep the value even if screen is rotated
                 getSupportFragmentManager().beginTransaction().add(R.id.youtube_frag, firstfrag).commit();

@@ -45,7 +45,7 @@ public class YoutubeVideoList extends Fragment {
         Bundle args = this.getArguments();
         if(args != null){
             //getting the playlist id from bundle passsed from previous activity
-            id = args.getString("test");
+            id = args.getString("listid");
         }
     }
 
