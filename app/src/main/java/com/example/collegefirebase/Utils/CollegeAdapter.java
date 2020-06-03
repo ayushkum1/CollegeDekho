@@ -13,8 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.collegefirebase.Activites.CollegeDetails;
-import com.example.collegefirebase.Activites.CollegeGallery;
-import com.example.collegefirebase.Activites.CollegeMapLocation;
+import com.example.collegefirebase.CollegeGallery.CollegeGallery;
+import com.example.collegefirebase.MapsAPI.CollegeMapLocation;
 import com.example.collegefirebase.Model.College;
 import com.example.collegefirebase.R;
 import com.squareup.picasso.Picasso;

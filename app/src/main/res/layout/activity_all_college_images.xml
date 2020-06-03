@@ -4,40 +4,141 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Utils.CollegeFullImages">
-    <TextView
-        android:id="@+id/photos"
+    tools:context=".CollegeGallery.Photos.Utils.Grid.CollegeFullImages">
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="College Photos"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/infra_photos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="College Infrastructure Photos"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
 
-    <GridView
-        android:id="@+id/grid_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:columnWidth="100dp"
-        android:gravity="center"
-        android:numColumns="2"
-        android:horizontalSpacing="0dp"
-        android:verticalSpacing="0dp"
-        android:stretchMode="columnWidth"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/photos"/>
+            <GridView
+                android:id="@+id/grid_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnWidth="100dp"
+                android:gravity="center"
+                android:numColumns="2"
+                android:horizontalSpacing="0dp"
+                android:verticalSpacing="0dp"
+                android:stretchMode="columnWidth" />
 
-    <TextView
-        android:id="@+id/tvInf"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="371dp"
-        
-        android:text="more.."
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/grid_image" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvInf"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="320dp"
+                    android:text="more.." />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/hostel_photos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="College Hostel Photos"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <GridView
+                android:id="@+id/hostel_grid_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnWidth="100dp"
+                android:gravity="center"
+                android:numColumns="2"
+                android:horizontalSpacing="0dp"
+                android:verticalSpacing="0dp"
+                android:stretchMode="columnWidth" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/hostel_more"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="320dp"
+                    android:text="more.." />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/labs_photos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="College Labs Photos"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <GridView
+                android:id="@+id/labs_grid_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnWidth="100dp"
+                android:gravity="center"
+                android:numColumns="2"
+                android:horizontalSpacing="0dp"
+                android:verticalSpacing="0dp"
+                android:stretchMode="columnWidth" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/labs_more"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="320dp"
+                    android:text="more.." />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/extra_photos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="College Extra Facilities Photos"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <GridView
+                android:id="@+id/extra_grid_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnWidth="100dp"
+                android:gravity="center"
+                android:numColumns="2"
+                android:horizontalSpacing="0dp"
+                android:verticalSpacing="0dp"
+                android:stretchMode="columnWidth" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/extra_more"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="320dp"
+                    android:text="more.." />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

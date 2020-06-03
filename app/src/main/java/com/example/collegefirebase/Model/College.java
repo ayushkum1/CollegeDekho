@@ -5,10 +5,10 @@ import java.util.List;
 
 public class College {
     private String id, name, address, departments, about, placements, image, rating, latitude, longitude,videourls;
-    private List<String> imageurls;
+    private List<String> infra_imageurls, hostel_url_list, extra_url_list, labs_url_list;
 
-
-    public College(String id, String name, String address, String departments, String about, String placements, String image, String rating, String videourls, List<String> imageurls) {
+    public College(String id, String name, String address, String departments, String about, String placements, String image, String rating, String latitude, String longitude, String videourls, List<String> infra_imageurls, List<String> hostel_url_list, List<String> extra_url_list, List<String> labs_url_list) {
+        this.id = id;
         this.name = name;
         this.address = address;
         this.departments = departments;
@@ -16,9 +16,13 @@ public class College {
         this.placements = placements;
         this.image = image;
         this.rating = rating;
-        this.id = id;
-        this.imageurls = imageurls;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.videourls = videourls;
+        this.infra_imageurls = infra_imageurls;
+        this.hostel_url_list = hostel_url_list;
+        this.extra_url_list = extra_url_list;
+        this.labs_url_list = labs_url_list;
     }
 
     public College() {
@@ -32,12 +36,36 @@ public class College {
         this.id = id;
     }
 
-    public List<String> getImageurls() {
-        return imageurls;
+    public List<String> getInfra_imageurls() {
+        return infra_imageurls;
     }
 
-    public void setImageurls(List<String> imageurls) {
-        this.imageurls = imageurls;
+    public void setInfra_imageurls(List<String> infra_imageurls) {
+        this.infra_imageurls = infra_imageurls;
+    }
+
+    public List<String> getHostel_url_list() {
+        return hostel_url_list;
+    }
+
+    public void setHostel_url_list(List<String> hostel_url_list) {
+        this.hostel_url_list = hostel_url_list;
+    }
+
+    public List<String> getExtra_url_list() {
+        return extra_url_list;
+    }
+
+    public void setExtra_url_list(List<String> extra_url_list) {
+        this.extra_url_list = extra_url_list;
+    }
+
+    public List<String> getLabs_url_list() {
+        return labs_url_list;
+    }
+
+    public void setLabs_url_list(List<String> labs_url_list) {
+        this.labs_url_list = labs_url_list;
     }
 
     public String getName() {

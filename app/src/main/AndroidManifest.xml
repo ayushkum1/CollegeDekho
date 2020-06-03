@@ -18,14 +18,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activites.PlacesNearBy"></activity>
-        <activity android:name=".Activites.CompleteVideoList" />
-        <activity android:name=".Utils.YoutubeVideoViewHolder" />
-        <activity android:name=".Activites.SlideImage" />
-        <activity android:name=".Utils.CollegeFullVideos" />
-        <activity android:name=".Utils.CollegeFullImages" />
-        <activity android:name=".Activites.CollegeAllVideos" />
-        <activity android:name=".Activites.AllCollegeImages" />
+        <activity android:name=".CollegeGallery.Photos.Utils.Grid.ExtraPhotos"></activity>
+        <activity android:name=".CollegeGallery.Photos.Utils.Grid.HostelPhotos" />
+        <activity android:name=".CollegeGallery.Photos.Utils.Grid.LabsPhotos" />
+        <activity android:name=".MapsAPI.PlacesNearBy" />
+        <activity android:name=".CollegeGallery.YouTubeAPI.CompleteVideoList" />
+        <activity android:name=".CollegeGallery.YouTubeAPI.Utils.YoutubeVideoViewHolder" />
+        <activity android:name=".CollegeGallery.Photos.SlideImage" />
+        <activity android:name=".CollegeGallery.Utils.CollegeFullVideos" />
+        <activity android:name=".CollegeGallery.Photos.Utils.Grid.CollegeFullImages" />
+        <activity android:name=".CollegeGallery.Photos.AllCollegeImages" />
         <activity android:name=".Activites.SignUpDetails" />
         <activity android:name=".Activites.ResetPassword" />
         <!--
@@ -41,12 +43,12 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Activites.CollegeMapLocation"
+            android:name=".MapsAPI.CollegeMapLocation"
             android:label="@string/title_activity_college_map_location" />
-        <activity android:name=".Activites.CollegeGallery" />
+        <activity android:name=".CollegeGallery.CollegeGallery" />
         <activity android:name=".Activites.CollegeDetails" />
-        <activity android:name=".Activites.MainActivity" />
-        <activity android:name=".Activites.SignUp">
+        <activity android:name=".Activites.SignUp" />
+        <activity android:name=".Activites.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -75,7 +77,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activites.YoutubeVideoPlayer" />
+        <activity android:name=".CollegeGallery.YouTubeAPI.YoutubeVideoPlayer" />
     </application>
 
 </manifest>
