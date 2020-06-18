@@ -5,9 +5,20 @@
     android:layout_height="match_parent"
     tools:context=".MapsAPI.Fragments.PlacesNearByFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/nearby_recycler"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <fragment
+            android:id="@+id/nearby_location_map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/nearby_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
 
 </FrameLayout>

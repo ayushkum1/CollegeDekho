@@ -1,16 +1,18 @@
 package com.example.collegefirebase.MapsAPI.Models;
 
 public class NearByPlacesModel {
-    String name, address, rating, id;
+    String name, address, rating, id, lat, lng, photourl;
 
     public NearByPlacesModel() {
     }
 
-    public NearByPlacesModel(String name, String address, String rating, String id) {
+    public NearByPlacesModel(String name, String address, String rating, String id, String lat, String lng) {
         this.name = name;
         this.address = address;
         this.rating = rating;
         this.id = id;
+        this.lat = lat;
+        this.lng = lng;
     }
 
     public String getName() {
@@ -45,6 +47,30 @@ public class NearByPlacesModel {
         this.id = id;
     }
 
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
+
+    public String getPhotourl() {
+        return photourl;
+    }
+
+    public void setPhotourl(String photourl) {
+        this.photourl = photourl;
+    }
+
     @Override
     public String toString() {
         return "NearByPlacesModel{" +
@@ -52,6 +78,9 @@ public class NearByPlacesModel {
                 ", address='" + address + '\'' +
                 ", rating='" + rating + '\'' +
                 ", id='" + id + '\'' +
+                ", lat='" + lat + '\'' +
+                ", lng='" + lng + '\'' +
+                ", photourl='" + photourl + '\'' +
                 '}';
     }
 }

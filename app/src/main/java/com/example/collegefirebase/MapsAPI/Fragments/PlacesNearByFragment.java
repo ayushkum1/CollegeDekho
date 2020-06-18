@@ -20,21 +20,30 @@ import com.android.volley.toolbox.Volley;
 import com.example.collegefirebase.MapsAPI.Models.NearByPlacesModel;
 import com.example.collegefirebase.R;
 import com.example.collegefirebase.MapsAPI.Utils.PlacesAdapter;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.DoubleUnaryOperator;
 
-public class PlacesNearByFragment extends Fragment {
+public class PlacesNearByFragment extends Fragment implements OnMapReadyCallback {
 
-    List<NearByPlacesModel> placelist;
-    PlacesAdapter adapter;
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager manager;
-
+    private List<NearByPlacesModel> placelist;
+    private PlacesAdapter adapter;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager manager;
+    private GoogleMap mMap;
     private String lat, lng, type, heading;
 
 
@@ -45,6 +54,8 @@ public class PlacesNearByFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         if (getArguments() != null) {
             lat = getArguments().getString("lat");
             lng = getArguments().getString("lng");
@@ -58,18 +69,22 @@ public class PlacesNearByFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_near_by_places, container, false);
 
+        SupportMapFragment mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.nearby_location_map);
+        mMapFragment.getMapAsync(this);
+
         recyclerView = view.findViewById(R.id.nearby_recycler);
         manager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(manager);
         recyclerView.setHasFixedSize(false);
 
-        String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+lat+","+lng+"&radius=3000&types="+type+"&key=AIzaSyAbWUx3SB5w5WpVKg7FfwsZlLyhxWnVpWo";
+        String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+lat+","+lng+"&radius=3000&types="+type+"&key=AIzaSyB1S9UmNAPR4ZaPfRddgkcmFzm2gdtT3d0";
         RequestQueue queue = Volley.newRequestQueue(getContext());
         StringRequest request = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         placelist = new ArrayList<>();
+                        String photoref = "";
                         try {
                             JSONObject mainObject = new JSONObject(response);
                             JSONArray itemArray = (JSONArray) mainObject.get("results");
@@ -78,7 +93,11 @@ public class PlacesNearByFragment extends Fragment {
                                 String rating = "4"; // check for error
                                 String id = itemArray.getJSONObject(i).getString("id");
                                 String address = itemArray.getJSONObject(i).getString("vicinity");
-                                NearByPlacesModel mod = new NearByPlacesModel(name, address, rating, id);
+                                String lat = itemArray.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getString("lat");
+                                String lng = itemArray.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getString("lng");
+                                //calling function for adding markers
+                                addMarkers(lat,lng,name);
+                                NearByPlacesModel mod = new NearByPlacesModel(name, address, rating, id, lat, lng);
                                 placelist.add(mod);
                             }
                             adapter = new PlacesAdapter(getContext(), placelist);
@@ -97,4 +116,21 @@ public class PlacesNearByFragment extends Fragment {
         queue.add(request);
         return  view;
         }
+
+
+    public void addMarkers(String lt, String ln, String name){
+        LatLng nearbyloc = new LatLng(Double.parseDouble(lt), Double.parseDouble(ln));
+        MarkerOptions markerOptions = new MarkerOptions();
+        mMap.addMarker(markerOptions.position(nearbyloc).title("Marker in " +name));
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        float default_zoom;
+        mMap = googleMap;
+        LatLng college = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
+        default_zoom = 16.0f;
+        mMap.addMarker(new MarkerOptions().position(college).title("Marker in " ));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(college,default_zoom));
+    }
 }
